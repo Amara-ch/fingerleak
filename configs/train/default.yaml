@@ -1,0 +1,26 @@
+# Training configuration (placeholder for Week 5+)
+
+batch_size: 8
+num_epochs: 50
+learning_rate: 1.0e-4
+optimizer: adamw          # adam | adamw | sgd
+scheduler: cosine         # cosine | step | plateau
+weight_decay: 1.0e-5
+gradient_clip: 1.0
+
+# Loss weights
+loss:
+  l1: 1.0
+  perceptual: 0.1
+  ridge_freq: 0.5         # FFT-based ridge frequency loss
+
+# Mixed precision (for Colab T4 / Kaggle P100)
+amp: true
+
+# Checkpointing
+save_every_n_epochs: 5
+keep_last_n_checkpoints: 3
+
+# Validation
+val_every_n_epochs: 1
+early_stopping_patience: 10

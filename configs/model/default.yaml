@@ -1,0 +1,46 @@
+# Model hyperparameters (placeholders — populated as we add DistNet, RidgeFormer)
+
+detection:
+  max_hands: 2
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
+
+geometry:
+  default_focal_length_px: 900.0
+  palm_width_cm: 8.5
+
+ridge:
+  gabor_ksize: 21
+  gabor_sigma: 4.0
+  gabor_lambda: 8.0
+  gabor_gamma: 0.5
+  n_orientations: 8
+  apply_clahe: true
+
+risk_score:
+  weights:
+    sharpness: 0.35
+    size: 0.20
+    ridge: 0.30
+    proximity: 0.15
+  thresholds:
+    low: 0.25
+    medium: 0.50
+    high: 0.75
+  ref_sharpness: 200.0
+  ref_size_px: 200.0
+  ref_distance_cm: 20.0
+
+# Placeholders (will be filled Week 5+)
+distnet:
+  in_channels: 3
+  num_features: 64
+  num_blocks: 16
+  scale: 4
+  distance_bins: [20, 30, 40, 50, 75, 100, 150]
+
+ridgeformer:
+  embed_dim: 192
+  num_heads: 6
+  num_layers: 8
+  patch_size: 16

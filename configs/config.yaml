@@ -1,0 +1,25 @@
+# Default config — overridden by command-line or sub-configs.
+# Usage: python scripts/test_detection.py +img=data/samples/sample.jpg
+
+defaults:
+  - data: default
+  - model: default
+  - train: default
+  - _self_
+
+# Project-wide settings
+project:
+  name: fingerleak
+  version: "0.1.0"
+  seed: 42
+
+# Paths (relative to repo root)
+paths:
+  data_dir: data
+  outputs_dir: outputs
+  checkpoints_dir: checkpoints
+  log_dir: logs
+
+# Hardware
+device: cpu              # cpu | cuda | mps
+num_workers: 2

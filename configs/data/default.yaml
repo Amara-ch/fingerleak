@@ -1,0 +1,15 @@
+# Dataset configuration
+
+# Sample image for quick tests
+sample_image: data/samples/sample.jpg
+
+# Dataset roots (populated in Week 3)
+socofing_root: data/raw/SOCOFing
+polyu_root: data/raw/PolyU
+nist_sd302_root: data/raw/NIST_SD302
+wild_selfies_root: data/raw/wild_selfies
+
+# Image specs
+image_size: 224           # input resolution for models
+fingertip_crop_size: 128  # default fingertip ROI side after resize
+augmentation: true
