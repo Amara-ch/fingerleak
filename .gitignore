@@ -216,3 +216,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+ 
+# FingerLeak project ignores 
+outputs/ 
+data/samples/*.jpg 
+data/samples/*.png 
+data/raw/ 
+data/processed/ 
+*.pth 
+*.ckpt 
+wandb/ 
+.venv/ 
