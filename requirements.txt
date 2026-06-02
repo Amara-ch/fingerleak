@@ -18,3 +18,4 @@ uvicorn
 pydantic>=2
 jupyter
 ipywidgets
+streamlit>=1.30.0
