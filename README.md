@@ -1,39 +1,109 @@
-# fingerleak
-Privacy-preserving detection of fingerprint leakage from casual selfies using deep learning
-# FingerLeak 🔒✌️
+# 🛡️ FingerLeak
 
-> *"Can a casual selfie leak your fingerprint? We measure it, and we mitigate it."*
+> **Detect, score, and mitigate fingerprint leakage from everyday photos and videos.**
 
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Status: WIP](https://img.shields.io/badge/status-active%20research-green.svg)](#roadmap)
+A research-backed pipeline that locates fingertip regions in images, estimates the **fingerprint-extraction risk**, and applies privacy filters (blur / pixelate / emoji / blackout) before the image ever leaves your device.
 
-**FingerLeak** is a research project that quantifies and mitigates the privacy risk of latent
-fingerprint leakage from casual selfies — particularly the ubiquitous peace-sign (✌️) pose.
+![status](https://img.shields.io/badge/status-active-brightgreen)
+![python](https://img.shields.io/badge/python-3.11-blue)
+![license](https://img.shields.io/badge/license-MIT-lightgrey)
+![tests](https://img.shields.io/badge/tests-passing-success)
 
-## 🧠 Background
+---
 
-In 2017, NII researchers in Tokyo demonstrated that fingerprints could be reconstructed from
-photos taken up to 3 metres away. Recent reporting (SCMP 2024–25) and security articles
-(Cybernews) have highlighted growing concern about *latent fingerprint leakage* from social
-media. Yet, **no public, calibrated metric exists** that tells a user how risky a given selfie
-actually is. FingerLeak fills that gap.
+## ✨ Why FingerLeak?
 
-## 🎯 Key Contributions (Planned)
+Modern phone cameras can capture **enough fingerprint detail from a casual selfie** to allow biometric spoofing ([Nat. Inst. of Informatics, 2017](https://www.nii.ac.jp/en/news/release/2017/0110.html)). FingerLeak is an open-source toolkit that:
 
-1. **C1: FingerLeak-Score** — a calibrated, reproducible privacy-risk metric per selfie.
-2. **C2: DistNet** — distance-conditioned super-resolution for fingertip ROIs.
-3. **C3: RidgeFormer** — transformer-based ridge reconstruction trained on contactless prints.
-4. **C4: Wild evaluation** — first benchmark on selfies "in the wild" with consent-protocol data.
+1. 🔎 **Detects** hands & fingertips with MediaPipe.
+2. 📊 **Scores** the extraction risk (`FingerLeak-Score`) based on resolution, sharpness, lighting, and finger area.
+3. 🛡️ **Mitigates** the risk by selectively obfuscating only the fingertip regions — preserving the rest of the photo.
 
-## 🏗️ System Architecture
+---
 
-```mermaid
-flowchart LR
-    A[📸 Selfie] --> B[Stage 0: MediaPipe Hand + Peace-Sign]
-    B --> C[Stage 1: Distance + Fingertip Crops]
-    C --> D[Stage 2: DistNet SR<br/><i>planned</i>]
-    D --> E[Stage 3: Gabor → RidgeFormer]
-    E --> F[Stage 4: FingerLeak-Score]
-    F --> G[🛡️ Risk Report<br/>Low / Medium / High / Critical]
+## 🖼️ Privacy Filter Showcase
+
+Same input image processed with four different privacy filters. Notice how only the **fingertips** are altered while the hand pose and identity remain intact.
+
+| Mode | Result |
+|---|---|
+| **Blur** (Gaussian) | ![blur](outputs/privacy_blur.jpg) |
+| **Pixelate** | ![pixelate](outputs/privacy_pixelate.jpg) |
+| **Emoji disc** | ![emoji](outputs/privacy_emoji.jpg) |
+| **Blackout** | ![blackout](outputs/privacy_blackout.jpg) |
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# 1. Clone and set up
+git clone https://github.com/humbleunitydev/fingerleak.git
+cd fingerleak
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1     # Windows
+# source .venv/bin/activate      # Linux/Mac
+pip install -r requirements.txt
+
+# 2. Run privacy demo on the sample image
+python scripts/demo_privacy.py --mode pixelate
+
+# 3. Open the result
+start outputs/privacy_demo.jpg   # Windows
+```
+
+---
+
+## 🧪 Tests
+
+```bash
+pytest -v
+```
+
+Current coverage:
+
+- ✅ Risk-score module
+- ✅ Fingertip cropping
+- ✅ Privacy filters (blur / pixelate / blackout / emoji)
+
+---
+
+## 📂 Project Structure
+
+```
+fingerleak/
+├── src/fingerleak/
+│   ├── detection/          # MediaPipe hand + fingertip cropping
+│   ├── scoring/            # FingerLeak-Score risk metric
+│   └── privacy/            # 🆕 Blur / pixelate / emoji / blackout filters
+├── scripts/
+│   └── demo_privacy.py     # 🆕 End-to-end before/after demo
+├── tests/                  # Pytest suite
+├── data/samples/           # Example hand image
+└── outputs/                # Generated demo images
+```
+
+---
+
+## 🛣️ Roadmap
+
+- [x] Hand & fingertip detection (MediaPipe)
+- [x] FingerLeak-Score metric
+- [x] Privacy filter module (4 modes)
+- [x] Before/after demo pipeline
+- [ ] Real-time webcam demo
+- [ ] Streamlit web UI
+- [ ] Mobile (Android) port
+
+---
+
+## 📜 License
+
+MIT © 2026 — see [LICENSE](LICENSE).
+
+---
+
+## 🙏 Acknowledgements
+
+- [MediaPipe Hands](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)
+- Research inspiration: NII Japan fingerprint-from-photo studies
