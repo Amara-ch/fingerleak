@@ -548,7 +548,24 @@ def page_scanner():
             st.image(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), use_container_width=True)
         return
     # Filter back-of-hand detections (no fingerprint risk from back)
-    palm_hands = [h for h in hands if h.palm_facing]
+    # Fallback: if MediaPipe failed, try skin+ridge detector
+    if not hands:
+        try:
+            from src.fingerleak.detection.fallback_fingertip import detect_fallback
+            fb = detect_fallback(img)
+            if fb:
+                st.warning(f"No full hand detected, but {len(fb)} fingertip-like region(s) found via texture analysis.")
+                for i, fc in enumerate(fb):
+                    st.image(cv2.cvtColor(fc.crop, cv2.COLOR_BGR2RGB),
+                             caption=f"Fallback crop #{i+1} - ridge score: {fc.ridge_score:.2f}",
+                             use_container_width=True)
+                return
+        except Exception as e:
+            st.error(f"Fallback detector error: {e}")
+        st.info("No hands detected. Try a clearer photo.")
+        return
+
+    palm_hands = [h for h in hands if getattr(h, "palm_facing", True)]
     back_count = len(hands) - len(palm_hands)
     if back_count > 0:
         st.info(f"{back_count} hand(s) showing back side — no fingerprint risk, skipped.")
