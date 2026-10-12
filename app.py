@@ -1,12 +1,21 @@
-﻿"""FingerLeak â€” Full multi-page web app (Tesla-grade UI)."""
+"""FingerLeak â€” Full multi-page web app (Tesla-grade UI)."""
 from __future__ import annotations
 
 import sys
 from pathlib import Path
 
-import cv2
 import numpy as np
 import streamlit as st
+
+try:
+    import cv2
+except ImportError as _cv2_err:
+    st.error(f"Failed to import OpenCV: {_cv2_err}")
+    st.info(
+        "If running on Streamlit Community Cloud (Debian Trixie), ensure `packages.txt` "
+        "contains `libgl1` and `libglib2.0-0t64`, then reboot the app from 'Manage app' -> 'Reboot app'."
+    )
+    st.stop()
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
