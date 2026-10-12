@@ -1,7 +1,7 @@
 """MediaPipe Hands wrapper — tuned for partial-hand and close-up detection."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 import cv2
@@ -15,7 +15,7 @@ class HandLandmarks:
     landmarks_px: np.ndarray       # (21, 2) pixel coords
     handedness: str
     score: float
-    palm_facing: bool              # True = palm/finger pads visible (RISK), False = back of hand
+    palm_facing: bool = True       # True = palm/finger pads visible (RISK), False = back of hand
 
 
 class HandDetector:
